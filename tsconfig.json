@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "allowJs": true,
+        "lib": ["esnext", "dom"],
+        "noEmit": true,
+        "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
+        "paths": {
+            "@/*": ["src/*"]
+        }
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.js"],
+    "exclude": ["src/utils/three/**/*"]
+}
