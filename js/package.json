@@ -18,6 +18,7 @@
         "eslint": "^7.17.0",
         "eslint-config-alloy": "^3.10.0",
         "eslint-plugin-vue": "^7.4.1",
+        "flush-promises": "^1.0.2",
         "jest": "^26.6.3",
         "prettier": "^2.2.1",
         "ts-jest": "^26.4.4",
@@ -34,6 +35,16 @@
         },
         "parserOptions": {
             "parser": "@typescript-eslint/parser"
-        }
+        },
+        "overrides": [
+            {
+                "files": [
+                    "**/?(*.)+(spec|test).ts"
+                ],
+                "env": {
+                    "jest": true
+                }
+            }
+        ]
     }
 }

@@ -100,9 +100,7 @@ export interface Vector2 {
     y: number;
 }
 
-export interface SiliconElementSetup<T = {}> {
-    (ctx: SiliconElementSetupContext): T;
-}
+export type SiliconElementSetup<T = {}> = (ctx: SiliconElementSetupContext) => T;
 
 export interface SiliconElementSetupContext {
     received: ComputedRef<ReceivedSignal[]>;
@@ -110,12 +108,17 @@ export interface SiliconElementSetupContext {
     linkCleanCallback: LinkCleanCallbacks;
 }
 
-export interface LinkCleanCallbacks {
-    (cb: () => void): void;
-}
+export type LinkCleanCallbacks = (cb: () => void) => void;
 
 export interface Silicon<T> {
     mount: (pos: Vector2, setup: SiliconElementSetup<T>) => void;
     unmount: (pos: Vector2) => void;
     elems: ComputedRef<Array<{ pos: Vector2; elem: T }>>;
+}
+
+/**
+ * Среда, через которую проходят сообщения. Через неё регулируются все отложенные взаимодействия
+ */
+export interface Environment {
+    dispatch: (action: () => void) => void;
 }
