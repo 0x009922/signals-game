@@ -13,7 +13,8 @@
         "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
         "paths": {
             "@/*": ["src/*"]
-        }
+        },
+        "esModuleInterop": true
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.js"],
     "exclude": ["src/utils/three/**/*"]

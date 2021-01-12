@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import { ComputedRef, Ref } from 'vue';
 
 export enum Direction {
     Up,
@@ -34,59 +34,57 @@ export interface ReceivedSignal {
     dir: Direction;
 }
 
-interface SignalsContext {
-    /**
-     * Устанавливает, какое у сигнала излучение, то есть куда и насколько он излучает сигнал
-     */
-    // set_self_emitting: (signals: EmittedSignal[]) => void;
-    // Или лучше реактивный массив, который можно менять?
-    // emitted_signals: EmittedSignal[];
-    emitted_signals: Ref<EmittedSignal[]>;
+// /**
+//  * @todo возможно стоит сюда включить и специальный линкер-утилиту, который бы можно было использовать
+//  * для привязки к вотчам и прочему
+//  */
+// export interface SignalsContext {
+//     /**
+//      * Устанавливает, какое у сигнала излучение, то есть куда и насколько он излучает сигнал
+//      */
+//     // set_self_emitting: (signals: SignalMove[]) => void;
+//     // Или лучше реактивный массив, который можно менять?
+//     // emitted_signals: EmittedSignal[];
+//     emitted_signals: Ref<EmittedSignal[]>;
 
-    // Реактивный массив входящих в элемент сигналов - только для чтения, разумеется.
-    // readonly received_signals: ReceivedSignal[];
-    readonly received_signals: Ref<ReceivedSignal[]>;
-}
+//     // // Реактивный массив входящих в элемент сигналов - только для чтения, разумеется.
+//     // // readonly received_signals: ReceivedSignal[];
+//     readonly received_signals: Ref<ReceivedSignal[]>;
+// }
 
-interface UtilizeSignalsContext {
-    use_context(ctx: SignalsContext): void;
-}
+// export interface UtilizeSignalsContext {
+//     use_context(ctx: SignalsContext): void;
+// }
 
-interface UnmountHook {
-    unmounted(): void;
-}
+// export interface UnmountHook {
+//     unmounted(): void;
+// }
 
 // type ComposableUtilizer = UtilizeSignalsContext & UnmountHook;
 
-interface ElementPosition {
-    to_str(this: ElementPosition): string;
-    from_str(str_pos: string): ElementPosition;
-    move(how: SignalMove): ElementPosition;
-}
+// interface ElementPosition {
+//     to_str(this: ElementPosition): string;
+//     from_str(str_pos: string): ElementPosition;
+//     move(how: SignalMove): ElementPosition;
+// }
+
+// // class ElementPosition {}
 
 // /**
 //  * Это уже реализация чего-то конкретного
 //  */
 // class ElementPosition {
+//     static from_key(key: string): ElementPosition {}
+
 //     x: number;
 
 //     y: number;
 
-//     public constructor(x: number, y: number) {
+//     public constructor(x: number, y: number) {}
 
-//     }
+//     to_key(): string {}
 
-//     static from_str(str: string): ElementPosition {
-
-//     }
-
-//     to_str(): string {
-
-//     }
-
-//     move(how: SignalMove): ElementPosition {
-
-//     }
+//     // move(how: SignalMove) {}
 // }
 
 // abstract class A {
@@ -97,10 +95,27 @@ interface ElementPosition {
 //     public abstract static s();
 // }
 
-interface SignalsUtilizerCompositor<T extends UtilizeSignalsContext & UnmountHook> {
-    // private cells: Map<string, CellData>;
+export interface Vector2 {
+    x: number;
+    y: number;
+}
 
-    mount(pos: PosToStr, elem: T): void;
+export interface SiliconElementSetup<T = {}> {
+    (ctx: SiliconElementSetupContext): T;
+}
 
-    unmount(pos: PosToStr): void;
+export interface SiliconElementSetupContext {
+    received: ComputedRef<ReceivedSignal[]>;
+    setEmitted: (r: Ref<EmittedSignal[]>) => void;
+    linkCleanCallback: LinkCleanCallbacks;
+}
+
+export interface LinkCleanCallbacks {
+    (cb: () => void): void;
+}
+
+export interface Silicon<T> {
+    mount: (pos: Vector2, setup: SiliconElementSetup<T>) => void;
+    unmount: (pos: Vector2) => void;
+    elems: ComputedRef<Array<{ pos: Vector2; elem: T }>>;
 }
