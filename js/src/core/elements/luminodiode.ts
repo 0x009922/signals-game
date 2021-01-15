@@ -1,11 +1,11 @@
 import { computed, Ref } from 'vue';
 import { ChipSetup } from '@/core/heap';
 
-export interface ElemDiod {
+export interface LuminodiodeChip {
     active: Ref<boolean>;
 }
 
-export const setupDiod: ChipSetup<ElemDiod> = (ctx) => {
+export const setupLuminodiode: ChipSetup<LuminodiodeChip> = (ctx) => {
     const active = computed<boolean>(() => ctx.received.value.length > 0);
 
     return {

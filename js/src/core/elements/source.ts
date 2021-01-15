@@ -1,29 +1,32 @@
-import { Direction } from '@/core/heap';
+import { Direction, ChipSetup } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
-import { ChipSetup } from '@/core/heap';
 
-interface ElemSource {
+interface SourceChip {
     active: ComputedRef<boolean>;
     on: () => void;
     off: () => void;
 }
 
-export const setupSource: ChipSetup<ElemSource> = (ctx) => {
+export const setupSource: ChipSetup<SourceChip> = (ctx) => {
     const active = ref(false);
-    const on = () => (active.value = true);
-    const off = () => (active.value = false);
 
-    ctx.setEmitted(
-        computed(() => {
-            return active.value
-                ? [
-                      { step: 1, dir: Direction.Left },
-                      { step: 1, dir: Direction.Up },
-                      { step: 1, dir: Direction.Right },
-                      { step: 1, dir: Direction.Down },
-                  ]
-                : [];
-        }),
+    function on() {
+        active.value = true;
+    }
+
+    function off() {
+        active.value = false;
+    }
+
+    ctx.emitted(() =>
+        active.value
+            ? [
+                  { step: 1, dir: Direction.Left },
+                  { step: 1, dir: Direction.Up },
+                  { step: 1, dir: Direction.Right },
+                  { step: 1, dir: Direction.Down },
+              ]
+            : [],
     );
 
     return {

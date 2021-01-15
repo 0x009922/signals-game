@@ -1,10 +1,10 @@
 import { ComputedRef, Ref } from 'vue';
 
 export enum Direction {
-    Up,
-    Down,
-    Left,
-    Right,
+    Up = 'UP',
+    Down = 'DOWN',
+    Left = 'LEFT',
+    Right = 'RIGHT',
 }
 
 // можно для Direction написать associated methods, типа проверки двух направлений на противоположность и так далее

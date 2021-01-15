@@ -1,14 +1,13 @@
-import { Direction } from '@/core/heap';
+import { Direction, ChipSetup } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
-import { ChipSetup } from '@/core/heap';
 
-export interface ElemInvertor {
+export interface InvertorChip {
     outputDir: ComputedRef<Direction>;
     outputActive: ComputedRef<boolean>;
     setOutputDir: (val: Direction) => void;
 }
 
-export const setupInvertor: ChipSetup<ElemInvertor> = (ctx) => {
+export const setupInvertor: ChipSetup<InvertorChip> = (ctx) => {
     const outputDir = ref<Direction>(Direction.Right);
     const setOutputDir = (val: Direction) => {
         outputDir.value = val;
@@ -18,7 +17,7 @@ export const setupInvertor: ChipSetup<ElemInvertor> = (ctx) => {
         return ctx.received.value.some((x) => x.dir === outputDir.value);
     });
 
-    ctx.setEmitted(computed(() => (outputActive.value ? [{ dir: outputDir.value, step: 1 }] : [])));
+    ctx.emitted(() => (outputActive.value ? [{ dir: outputDir.value, step: 1 }] : []));
 
     return {
         outputActive,
