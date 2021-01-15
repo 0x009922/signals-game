@@ -6,6 +6,8 @@ export interface PowerSupplyChip extends ChipBase<'POWER_SUPPLY'> {
     enabled: ComputedRef<boolean>;
     on: () => void;
     off: () => void;
+    toggle: () => void;
+    setEnabled: (val: boolean) => void;
 }
 
 export const setupPowerSupply: ChipSetup<PowerSupplyChip> = (ctx) => {
@@ -17,6 +19,14 @@ export const setupPowerSupply: ChipSetup<PowerSupplyChip> = (ctx) => {
 
     function off() {
         active.value = false;
+    }
+
+    function toggle() {
+        active.value = !active.value;
+    }
+
+    function setEnabled(val: boolean) {
+        active.value = val;
     }
 
     ctx.emitted(() =>
@@ -32,8 +42,10 @@ export const setupPowerSupply: ChipSetup<PowerSupplyChip> = (ctx) => {
 
     return {
         chip: 'POWER_SUPPLY',
+        enabled: computed(() => active.value),
         on,
         off,
-        enabled: computed(() => active.value),
+        toggle,
+        setEnabled,
     };
 };

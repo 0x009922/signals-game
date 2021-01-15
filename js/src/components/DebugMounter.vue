@@ -1,8 +1,9 @@
 <script lang="ts">
+import { computed, defineComponent, onMounted } from 'vue';
 import { setupPowerSupply } from '@/chips/power-supply';
 import { setupSensor } from '@/chips/sensor';
 import { useAppStore } from '@/state';
-import { computed, defineComponent } from 'vue';
+import { setupInvertor } from '@/chips/invertor';
 
 export default defineComponent({
     name: 'DebugMounter',
@@ -17,8 +18,19 @@ export default defineComponent({
 
         function mount() {
             silicon.mount({ x: 0, y: 0 }, setupPowerSupply);
-            silicon.mount({ x: 1, y: 0 }, setupSensor);
+            silicon.mount({ x: 1, y: 0 }, setupInvertor);
+            silicon.mount({ x: 2, y: 0 }, setupSensor);
+            silicon.mount({ x: -1, y: 0 }, setupSensor);
+            silicon.mount({ x: 0, y: 1 }, setupSensor);
+            silicon.mount({ x: 0, y: -1 }, setupSensor);
+            silicon.mount({ x: 1, y: -1 }, setupSensor);
         }
+
+        onMounted(() => {
+            if (!someMounted.value) {
+                mount();
+            }
+        });
 
         return {
             clearAll,
@@ -30,7 +42,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="fixed top-0 left-0 p-2 m-2 shadow-md">
+    <div class="fixed top-0 right-0 p-2 m-2 shadow-xl border bg-white w-64">
         <h1 class="mb-2 text-red-700">Debug</h1>
 
         <it-button v-if="someMounted" @click="clearAll">clear mounted</it-button>

@@ -14,7 +14,9 @@ export interface AppStore {
 
 export function createAppStore(): AppStore {
     const silicon = useSilicon<AppChips>({
-        env: useLightningEnvironment(),
+        env: {
+            dispatch: (act) => setTimeout(act, 300),
+        },
     });
 
     return {
