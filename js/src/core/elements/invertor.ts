@@ -1,6 +1,6 @@
 import { Direction } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
-import { SiliconElementSetup } from '@/core/heap';
+import { ChipSetup } from '@/core/heap';
 
 export interface ElemInvertor {
     outputDir: ComputedRef<Direction>;
@@ -8,7 +8,7 @@ export interface ElemInvertor {
     setOutputDir: (val: Direction) => void;
 }
 
-export const setupInvertor: SiliconElementSetup<ElemInvertor> = (ctx) => {
+export const setupInvertor: ChipSetup<ElemInvertor> = (ctx) => {
     const outputDir = ref<Direction>(Direction.Right);
     const setOutputDir = (val: Direction) => {
         outputDir.value = val;

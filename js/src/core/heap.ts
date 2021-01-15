@@ -100,18 +100,18 @@ export interface Vector2 {
     y: number;
 }
 
-export type SiliconElementSetup<T = {}> = (ctx: SiliconElementSetupContext) => T;
+export type ChipSetup<T> = (ctx: ChipSetupContext) => T;
 
-export interface SiliconElementSetupContext {
-    received: ComputedRef<ReceivedSignal[]>;
-    setEmitted: (r: Ref<EmittedSignal[]>) => void;
-    linkCleanCallback: LinkCleanCallbacks;
+export interface ChipSetupContext {
+    received: Ref<ReceivedSignal[]>;
+    emitted: (getter: () => EmittedSignal[]) => void;
+    // linkCleanCallback: LinkCleanCallbacks;
 }
 
 export type LinkCleanCallbacks = (cb: () => void) => void;
 
 export interface Silicon<T> {
-    mount: (pos: Vector2, setup: SiliconElementSetup<T>) => void;
+    mount: <P extends T>(pos: Vector2, setup: ChipSetup<P>) => P;
     unmount: (pos: Vector2) => void;
     elems: ComputedRef<Array<{ pos: Vector2; elem: T }>>;
 }

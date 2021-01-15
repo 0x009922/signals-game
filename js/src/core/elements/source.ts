@@ -1,6 +1,6 @@
 import { Direction } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
-import { SiliconElementSetup } from '@/core/heap';
+import { ChipSetup } from '@/core/heap';
 
 interface ElemSource {
     active: ComputedRef<boolean>;
@@ -8,7 +8,7 @@ interface ElemSource {
     off: () => void;
 }
 
-export const setupSource: SiliconElementSetup<ElemSource> = (ctx) => {
+export const setupSource: ChipSetup<ElemSource> = (ctx) => {
     const active = ref(false);
     const on = () => (active.value = true);
     const off = () => (active.value = false);
