@@ -98,6 +98,8 @@ describe('silicon', () => {
 
             expect(ok.value).toEqual(false);
         });
+
+        it.skip('излучатель-передатчик-получатель', () => {});
     });
 
     describe('окружающая среда (диспетчеризация)', () => {
@@ -165,6 +167,8 @@ describe('silicon', () => {
 
             expect(dispatchMock).toHaveBeenCalledTimes(2);
         });
+
+        it.skip('излучатель-передатчик-получатель - сигнал переходит последовательно', () => {});
 
         // it('', () => {});
 

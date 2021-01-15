@@ -1,13 +1,14 @@
 import { Direction, ChipSetup } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
+import { ChipBase } from './heap';
 
-interface SourceChip {
-    active: ComputedRef<boolean>;
+export interface PowerSupplyChip extends ChipBase<'POWER_SUPPLY'> {
+    enabled: ComputedRef<boolean>;
     on: () => void;
     off: () => void;
 }
 
-export const setupSource: ChipSetup<SourceChip> = (ctx) => {
+export const setupPowerSupply: ChipSetup<PowerSupplyChip> = (ctx) => {
     const active = ref(false);
 
     function on() {
@@ -30,8 +31,9 @@ export const setupSource: ChipSetup<SourceChip> = (ctx) => {
     );
 
     return {
+        chip: 'POWER_SUPPLY',
         on,
         off,
-        active: computed(() => active.value),
+        enabled: computed(() => active.value),
     };
 };

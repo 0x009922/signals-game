@@ -1,7 +1,8 @@
 import { Direction, ChipSetup } from '@/core/heap';
 import { computed, ComputedRef, ref } from 'vue';
+import { ChipBase } from './heap';
 
-export interface InvertorChip {
+export interface InvertorChip extends ChipBase<'INVERTOR'> {
     outputDir: ComputedRef<Direction>;
     outputActive: ComputedRef<boolean>;
     setOutputDir: (val: Direction) => void;
@@ -20,6 +21,7 @@ export const setupInvertor: ChipSetup<InvertorChip> = (ctx) => {
     ctx.emitted(() => (outputActive.value ? [{ dir: outputDir.value, step: 1 }] : []));
 
     return {
+        chip: 'INVERTOR',
         outputActive,
         setOutputDir,
         outputDir: computed(() => outputDir.value),
