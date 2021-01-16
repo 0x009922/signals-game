@@ -29,8 +29,6 @@ export default defineComponent({
         function toggleDir() {
             const index = order.indexOf(outputDir.value);
             setOutputDir(order[(index + 1) % 4]);
-
-            console.log(outputDir.value);
         }
 
         return {

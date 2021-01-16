@@ -6,9 +6,11 @@ import ChipSensor from './ChipSensor.vue';
 import ChipInvertor from './ChipInvertor.vue';
 import { Vector2 } from '@/core/heap';
 import ChipBufferVue from './ChipBuffer.vue';
+import SiliconGridSvg from './SiliconGridSvg.vue';
 
 export default defineComponent({
     name: 'SiliconGrid',
+    components: { SiliconGridSvg },
     setup() {
         const {
             silicon: { elems },
@@ -29,19 +31,9 @@ export default defineComponent({
             }
         }
 
-        const zoom = ref(1);
-        const width = computed(() => zoom.value * 10);
-        const height = computed(() => zoom.value * 10);
-        const origin = reactive({
-            x: 5,
-            y: 5,
-        });
-        const viewBox = computed(() => `${-origin.x} ${-origin.y} ${width.value} ${height.value}`);
-
         return {
             elems,
             resolveChipComponent,
-            viewBox,
         };
     },
 });
@@ -49,20 +41,14 @@ export default defineComponent({
 
 <template>
     <div class="w-screen h-screen p-4 silicon-grid">
-        <div class="border border-blue-900 h-full">
-            <svg
-                ref="containerRef"
-                :viewBox="viewBox"
-                :class="{
-                    'w-full h-full': true,
-                }"
-            >
+        <div class="border border-blue-900 h-full box-content">
+            <silicon-grid-svg>
                 <template v-for="{ pos, elem } in elems" :key="`${pos.x} ${pos.y}`">
                     <svg :x="pos.x" :y="-pos.y" width="1" height="1">
                         <component :is="resolveChipComponent(elem)" :chip="elem" />
                     </svg>
                 </template>
-            </svg>
+            </silicon-grid-svg>
         </div>
     </div>
 </template>
