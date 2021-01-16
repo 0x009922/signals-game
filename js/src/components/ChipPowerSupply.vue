@@ -22,14 +22,20 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="w-full select-none h-full cursor-pointer flex items-center justify-center" @click="toggle">
-        <div
-            :class="{
-                'text-4xl text-gray-500': true,
-                'text-green-700': enabled,
-            }"
-        >
-            +
-        </div>
-    </div>
+    <svg width="100%" height="100%" viewBox="0 0 100 100">
+        <text fill="white" x="10" y="20">Power</text>
+        <text :fill="enabled ? 'blue' : '#000088'" font-size="2em" x="20" y="50" dy="15">
+            {{ enabled ? 'ON' : 'OFF' }}
+        </text>
+
+        <rect
+            width="100%"
+            height="100%"
+            stroke="#000050"
+            stroke-width="15"
+            fill="transparent"
+            class="cursor-pointer"
+            @click="toggle"
+        ></rect>
+    </svg>
 </template>

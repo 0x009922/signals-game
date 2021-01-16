@@ -15,10 +15,10 @@ export const setupInvertor: ChipSetup<InvertorChip> = (ctx) => {
     };
 
     const outputActive = computed<boolean>(() => {
-        return ctx.received.value.some((x) => x.dir === outputDir.value);
+        return !ctx.received.value.some((x) => x.dir === outputDir.value);
     });
 
-    ctx.emitted(() => (!outputActive.value ? [{ dir: outputDir.value, step: 1 }] : []));
+    ctx.emitted(() => (outputActive.value ? [{ dir: outputDir.value, step: 1 }] : []));
 
     return {
         chip: 'INVERTOR',

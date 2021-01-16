@@ -1,4 +1,5 @@
 dependencies:
+  '@vueuse/core': 4.0.8_vue@3.0.5
   equal-vue: 0.7.19_vue@3.0.5
   fast-deep-equal: 3.1.3
   vue: 3.0.5
@@ -1024,6 +1025,23 @@ packages:
     dev: true
     resolution:
       integrity: sha512-uyBXaf3/Y2QdssfLG1hmQKbSD/2tYM2eeeHKK56Klz1RzkRBxBAP0rkKS/riHzDZfVuHQ6QP4qa4QpTSav5RGQ==
+  /@vueuse/core/4.0.8_vue@3.0.5:
+    dependencies:
+      '@vueuse/shared': 4.0.8_vue@3.0.5
+      vue-demi: 0.6.0_vue@3.0.5
+    dev: false
+    peerDependencies:
+      vue: '*'
+    resolution:
+      integrity: sha512-wD0JJUXpRgRBPCnGsAqcVk9Zz545zOmIjGv/1Mlco3rVmal7LEZ3rJh8SnBelxuyVNvRwifkK1gtbT24jY6V8Q==
+  /@vueuse/shared/4.0.8_vue@3.0.5:
+    dependencies:
+      vue-demi: 0.6.0_vue@3.0.5
+    dev: false
+    peerDependencies:
+      vue: '*'
+    resolution:
+      integrity: sha512-euAfdZeFHGAyCBoy7izgufC/kTt+yEjuVjeCmfuDQNAj7QsdzEpRlyblD+EGifHbyGFx8F3Ql6/bQzdTdwRFHA==
   /abab/2.0.5:
     dev: true
     resolution:
@@ -5337,6 +5355,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-GGZ99dJbARyh6rv03dXZImGlP5WvNG382A3nIt0yX1uyqBa558L/klHWcgEJzcVkG4t16OQWwPedMR3JkeD2Qg==
+  /vue-demi/0.6.0_vue@3.0.5:
+    dependencies:
+      vue: 3.0.5
+    dev: false
+    hasBin: true
+    peerDependencies:
+      vue: ^2.6.0 || >=3.0.0-rc.1
+    requiresBuild: true
+    resolution:
+      integrity: sha512-8GEJa0mHJpYJeGeq5fD1pJct2kfdl30PHfmL1NaJ97mgKPyKojlIRt/3inGBK4Y0ylCI6T5vOo3chwpqDOq/Hw==
   /vue-eslint-parser/7.3.0_eslint@7.17.0:
     dependencies:
       debug: 4.3.1
@@ -5572,6 +5600,7 @@ specifiers:
   '@vue/compiler-sfc': ^3.0.5
   '@vuedx/typecheck': ^0.4.1
   '@vuedx/typescript-plugin-vue': ^0.4.1
+  '@vueuse/core': ^4.0.8
   autoprefixer: ^10.2.1
   babel-eslint: ^10.1.0
   equal-vue: ^0.7.19

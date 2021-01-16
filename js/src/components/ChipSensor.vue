@@ -21,7 +21,13 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="w-full h-full flex items-center justify-center">
-        <div :class="{ 'w-4 h-4 rounded-full border-2': true, 'border-green-600': active }" />
-    </div>
+    <svg width="100%" height="100%" viewBox="0 0 100 100">
+        <rect width="100%" height="100%" fill="#002200" />
+        <circle cx="50" cy="50" r="20" :stroke="active ? 'lime' : 'green'" stroke-width="4" fill="transparent" />
+    </svg>
 </template>
+
+<style lang="sass" scoped>
+circle
+    transition: all .15s ease
+</style>

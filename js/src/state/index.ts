@@ -4,9 +4,10 @@ import { InvertorChip } from '@/chips/invertor';
 import { SensorChip } from '@/chips/sensor';
 import { createInjectHelpers } from '@/tools/provide-inject';
 import { useSilicon } from '@/core/silicon';
-import { useLightningEnvironment } from '@/core/lightning-env';
+import { BufferChip } from '@/chips/buffer';
+// import { useLightningEnvironment } from '@/core/lightning-env';
 
-export type AppChips = PowerSupplyChip | InvertorChip | SensorChip;
+export type AppChips = PowerSupplyChip | InvertorChip | SensorChip | BufferChip;
 
 export interface AppStore {
     silicon: Silicon<AppChips>;
@@ -15,7 +16,7 @@ export interface AppStore {
 export function createAppStore(): AppStore {
     const silicon = useSilicon<AppChips>({
         env: {
-            dispatch: (act) => setTimeout(act, 300),
+            dispatch: (act) => setTimeout(act, 100),
         },
     });
 
