@@ -1,24 +1,20 @@
-import { onUnmounted, reactive, Ref, toRefs, watch } from 'vue';
+import { Vector2 } from '@/core/vec';
+import { onUnmounted, reactive, watch } from 'vue';
 import { MaybeRef, refForSure } from './maybe-ref';
 
 export function useElementSizeByWindow(
     el: MaybeRef<Element | null>,
 ): {
-    width: Ref<number>;
-    height: Ref<number>;
+    size: Vector2;
 } {
     const elNormalized = refForSure(el);
 
-    const size = reactive({
-        width: 0,
-        height: 0,
-    });
+    const size = reactive(new Vector2(0, 0));
 
     function update() {
         if (elNormalized.value) {
             const box = elNormalized.value.getBoundingClientRect();
-            size.width = box.width;
-            size.height = box.height;
+            size.setFromCoords(box.width, box.height);
         }
     }
 
@@ -27,5 +23,5 @@ export function useElementSizeByWindow(
 
     watch(elNormalized, update);
 
-    return toRefs(size);
+    return { size };
 }

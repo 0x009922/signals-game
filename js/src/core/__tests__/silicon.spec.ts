@@ -1,5 +1,5 @@
 import { computed, ComputedRef, ref } from 'vue';
-import { Direction, Silicon, ChipSetup, Vector2, Environment } from '../heap';
+import { Direction, Silicon, ChipSetup, Vector2Like, Environment } from '../heap';
 import { useLightningEnvironment } from '../lightning-env';
 import { useSilicon } from '../silicon';
 
@@ -34,7 +34,7 @@ describe('silicon', () => {
         it('элемент появляется после монтировки', () => {
             const { elems, mount } = siliconFactory();
             const setup: ChipSetup<string> = () => 'Hey!';
-            const pos: Vector2 = { x: 1, y: 5 };
+            const pos: Vector2Like = { x: 1, y: 5 };
 
             mount(pos, setup);
 
@@ -49,7 +49,7 @@ describe('silicon', () => {
         it('элемент удаляется при демонтировании', () => {
             const { elems, mount, unmount } = siliconFactory();
             const setup: ChipSetup<string> = () => 'Hey!';
-            const pos: Vector2 = { x: 1, y: 5 };
+            const pos: Vector2Like = { x: 1, y: 5 };
 
             mount(pos, setup);
             unmount(pos);

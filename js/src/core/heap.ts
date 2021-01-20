@@ -95,7 +95,7 @@ export interface ReceivedSignal {
 //     public abstract static s();
 // }
 
-export interface Vector2 {
+export interface Vector2Like {
     x: number;
     y: number;
 }
@@ -111,9 +111,9 @@ export interface ChipSetupContext {
 export type LinkCleanCallbacks = (cb: () => void) => void;
 
 export interface Silicon<T> {
-    mount: <P extends T>(pos: Vector2, setup: ChipSetup<P>) => P;
-    unmount: (pos: Vector2) => void;
-    elems: ComputedRef<Array<{ pos: Vector2; elem: T }>>;
+    mount: <P extends T>(pos: Vector2Like, setup: ChipSetup<P>) => P;
+    unmount: (pos: Vector2Like) => void;
+    elems: ComputedRef<Array<{ pos: Vector2Like; elem: T }>>;
 }
 
 /**

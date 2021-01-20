@@ -1,9 +1,10 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, watchEffect } from 'vue';
 import { BufferChip, PortState, PortType } from '@/chips/buffer';
-import { Direction, Vector2 } from '@/core/heap';
+import { Direction, Vector2Like } from '@/core/heap';
 import { DIRECTIONS } from '@/core/dir';
-import { add } from '@/core/vec';
+import { Vector2 } from '@/core/vec';
+// import { add } from '@/core/vec';
 
 export default defineComponent({
     name: 'ChipBuffer',
@@ -22,7 +23,7 @@ export default defineComponent({
         }
 
         const STEP = 25;
-        const DIR_POSES: Record<Direction, Vector2> = {
+        const DIR_POSES: Record<Direction, Vector2Like> = {
             [Direction.Up]: { x: 0, y: -STEP },
             [Direction.Down]: { x: 0, y: STEP },
             [Direction.Left]: { x: -STEP, y: 0 },
@@ -30,8 +31,8 @@ export default defineComponent({
         };
 
         const list = computed<PortItem[]>(() => {
-            const center: Vector2 = { x: 50, y: 50 };
-            return DIRECTIONS.map((x) => ({ pos: add(DIR_POSES[x], center), state: ports[x] }));
+            const center = new Vector2(50, 50);
+            return DIRECTIONS.map((x) => ({ pos: Vector2.copy(center).add(DIR_POSES[x]), state: ports[x] }));
         });
 
         return {

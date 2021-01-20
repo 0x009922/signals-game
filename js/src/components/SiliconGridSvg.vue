@@ -2,6 +2,10 @@
 // import { useElementBounding, useElementSize } from '@vueuse/core';
 import { computed, defineComponent, reactive, ref, watchEffect } from 'vue';
 import { useElementSizeByWindow } from '@/tools/element-size';
+import { useSvgNavigation, setupScaleMouseOrigin } from '@/tools/svg-coords';
+import { Vector2 } from '@/core/vec';
+
+// function relativeToAbs()
 
 export default defineComponent({
     name: 'SiliconGridSvg',
@@ -20,21 +24,25 @@ export default defineComponent({
         const baseSize = computed<number>(() => Number(props.baseSize));
 
         const elem = ref<SVGElement | null>(null);
-        const { width: absWidth, height: absHeight } = useElementSizeByWindow(elem);
+        const { size: absSize } = useElementSizeByWindow(elem);
 
-        const zoom = ref(0.5);
-        // const zoomedBaseSize = computed<number>(() => zoom.value * baseSize.value);
-        const origin = reactive({
-            x: 0,
-            y: 0,
+        const zoom = ref(1);
+        const scale = computed(() => zoom.value * baseSize.value);
+        const absOffset: Vector2 = reactive(Vector2.zero());
+        const mousePos: Vector2 = reactive(Vector2.zero());
+
+        const { viewBox, mouseRelPos } = useSvgNavigation({
+            absSize,
+            absOffset,
+            mousePos,
+            scale,
         });
 
-        const viewBox = computed<string>(() => {
-            const sizeK = 1 / (zoom.value * baseSize.value);
-            const w = absWidth.value * sizeK;
-            const h = absHeight.value * sizeK;
-
-            return [-w / 2 - origin.x * zoom.value, -h / 2 - origin.y * zoom.value, w, h].join(' ');
+        setupScaleMouseOrigin({
+            scale,
+            absSize,
+            absOffset,
+            mousePosAbs: mousePos,
         });
 
         // events
@@ -48,11 +56,12 @@ export default defineComponent({
         }
 
         function mmove(e: MouseEvent) {
+            mousePos.x = e.offsetX;
+            mousePos.y = e.offsetY;
+
             if (grabbing.value) {
-                // я не знаю, почему зум в квадрате ._.
-                const k = 1 / (baseSize.value * zoom.value ** 2);
-                origin.x += e.movementX * k;
-                origin.y += e.movementY * k;
+                absOffset.x += e.movementX;
+                absOffset.y += e.movementY;
             }
         }
 
@@ -67,7 +76,6 @@ export default defineComponent({
         function mwheel({ wheelDelta: delta }: { wheelDelta: number }) {
             const val = delta * (0.1 / 120);
             zoom.value += val;
-            // TODO сохранять курсор на том же месте
         }
 
         function releaseGrabbing() {
@@ -78,8 +86,16 @@ export default defineComponent({
             elem,
             viewBox,
             zoom,
-            origin,
+            // origin,
             grabbing,
+
+            mousePos,
+            absSize,
+            absOffset,
+            mouseRelPos,
+            // mousePosRel,
+            // absWidth,
+            // absHeight,
 
             mdown,
             mmove,
@@ -98,6 +114,19 @@ export default defineComponent({
         <it-input v-model.number="origin.y" label-top="origin.y" />
     </div> -->
 
+    <div class="fixed bottom-0 left-0 m-2 bg-black text-red-500 p-2 text-sm rounded space-y-1 w-64">
+        <pre>{{
+            {
+                absSize,
+                absOffset,
+                mousePos,
+                mouseRelPos,
+            }
+        }}</pre>
+
+        <!-- <it-input v-model.number="zoom" label-top="zoom" /> -->
+    </div>
+
     <svg
         ref="elem"
         :viewBox="viewBox"
@@ -113,7 +142,20 @@ export default defineComponent({
     >
         <!-- <circle cx="0" cy="0" r="1" fill="blue" /> -->
 
-        <slot />
+        <!-- <slot /> -->
+
+        <g stroke="green" stroke-width="0.1" fill="transparent">
+            <polyline points="0,5 0,0 5,0" class="pointer-events-none" />
+        </g>
+
+        <circle
+            :cx="mouseRelPos.x"
+            :cy="mouseRelPos.y"
+            r="0.1"
+            stroke="pink"
+            fill="white"
+            class="pointer-events-none"
+        />
     </svg>
 </template>
 
@@ -121,6 +163,10 @@ export default defineComponent({
 svg.root
     cursor: grab
     user-select: none
+
+    // width: 500px
+    // height: 500px
+    // border: 1px solid green
 
     &--grabbing
         cursor: grabbing

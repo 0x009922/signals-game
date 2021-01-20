@@ -4,13 +4,13 @@ import {
     Silicon,
     ChipSetup,
     ChipSetupContext,
-    Vector2,
+    Vector2Like,
     ReceivedSignal,
     SignalMove,
     Direction,
     Environment,
 } from './heap';
-import { add, key_to_vec, mulScalar, vec_to_key } from './vec';
+import { Vector2 } from './vec';
 
 interface Cell<T> {
     elem: T;
@@ -29,17 +29,18 @@ export function useSilicon<T>(params: SiliconParams): Silicon<T> {
     // карта с самими элементами
     const elemsMap = shallowReactive<ElemsMap<T>>(new Map());
     const elemsList = computed<Array<{ pos: Vector2; elem: T }>>(() => {
-        return [...elemsMap.entries()].map(([key, { elem }]) => ({ pos: key_to_vec(key), elem }));
+        return [...elemsMap.entries()].map(([key, { elem }]) => ({ pos: Vector2.fromKey(key), elem }));
     });
 
-    const mount = <P extends T>(pos: Vector2, setup: ChipSetup<P>) => {
-        const key = vec_to_key(pos);
+    const mount = <P extends T>(pos: Vector2Like, setup: ChipSetup<P>) => {
+        const posVec = Vector2.copy(pos);
+        const key = posVec.toKey();
 
         if (elemsMap.has(key)) {
             throw new Error('Already mounted to this position');
         }
 
-        const received = receivedInPos(elemsMap, pos);
+        const received = receivedInPos(elemsMap, posVec);
         const receivedAfterEnv = useEnvRef({
             source: received,
             env: params.env,
@@ -67,9 +68,8 @@ export function useSilicon<T>(params: SiliconParams): Silicon<T> {
         return elem;
     };
 
-    const unmount = (pos: Vector2) => {
-        const key = vec_to_key(pos);
-        if (!elemsMap.delete(key)) {
+    const unmount = (pos: Vector2Like) => {
+        if (!elemsMap.delete(Vector2.copy(pos).toKey())) {
             throw new Error('No element');
         }
     };
@@ -84,18 +84,18 @@ export function useSilicon<T>(params: SiliconParams): Silicon<T> {
 function receivedInPos<T>(map: ElemsMap<T>, pos: Vector2): ComputedRef<ReceivedSignal[]> {
     // беру карту и прохожу по всем элементам
     // транслирую их исходящие сигналы и коллекционирую их, если они приходят куда надо
-    const targetKey = vec_to_key(pos);
+    const targetKey = pos.toKey();
 
     return computed<ReceivedSignal[]>(() => {
         return [...map.entries()].reduce<ReceivedSignal[]>((received, [key, cell]) => {
             // где нахожусь?
-            const pos = key_to_vec(key);
+            const pos = Vector2.fromKey(key);
 
             // получаю позиции, куда исходит сигнал
             cell.emitted.value
                 .map((move) => {
                     const moved = moveSignal(pos, move);
-                    const movedKey = vec_to_key(moved);
+                    const movedKey = moved.toKey();
                     // console.log(`From ${key} emitted to ${movedKey} (check for ${targetKey})`);
 
                     return { move, target: moved, targetKey: movedKey };
@@ -120,10 +120,11 @@ const MOVES: {
     [Direction.Right]: [1, 0],
 };
 
-function moveSignal(from: Vector2, move: SignalMove): Vector2 {
+function moveSignal(from: Vector2Like, move: SignalMove): Vector2 {
     const [x, y] = MOVES[move.dir];
-    const moveVec = mulScalar({ x, y }, move.step);
-    return add(from, moveVec);
+    return new Vector2(x, y).mulScalar(move.step).add(from);
+    // const moveVec = mulScalar({ x, y }, move.step);
+    // return add(from, moveVec);
 }
 
 function useEnvRef<T>(params: { source: Ref<T>; env: Environment; initVal?: T }): Ref<UnwrapRef<T>> {
