@@ -45,6 +45,17 @@ export default defineComponent({
             mousePosAbs: mousePos,
         });
 
+        // клеточка, над которой мышь
+        const mouseCell = computed(() => {
+            const { x, y } = mouseRelPos.value;
+            return new Vector2(Math.floor(x), -Math.floor(y));
+            // return {
+            //     x: Math.floor(x),
+            //     y: -Math.floor(y),
+            // };
+        });
+        const mouseCellKey = computed(() => mouseCell.value.toKey());
+
         // events
 
         const grabbing = ref(false);
@@ -56,12 +67,10 @@ export default defineComponent({
         }
 
         function mmove(e: MouseEvent) {
-            mousePos.x = e.offsetX;
-            mousePos.y = e.offsetY;
-
+            const movement = new Vector2(e.offsetX, e.offsetY).sub(mousePos);
+            mousePos.setFromCoords(e.offsetX, e.offsetY);
             if (grabbing.value) {
-                absOffset.x += e.movementX;
-                absOffset.y += e.movementY;
+                absOffset.add(movement);
             }
         }
 
@@ -97,6 +106,9 @@ export default defineComponent({
             // absWidth,
             // absHeight,
 
+            mouseCell,
+            mouseCellKey,
+
             mdown,
             mmove,
             mup,
@@ -114,18 +126,17 @@ export default defineComponent({
         <it-input v-model.number="origin.y" label-top="origin.y" />
     </div> -->
 
-    <div class="fixed bottom-0 left-0 m-2 bg-black text-red-500 p-2 text-sm rounded space-y-1 w-64">
+    <!-- <div class="fixed bottom-0 left-0 m-2 bg-black text-red-500 p-2 text-sm rounded space-y-1 w-64">
         <pre>{{
             {
                 absSize,
                 absOffset,
                 mousePos,
                 mouseRelPos,
+                mouseCell,
             }
         }}</pre>
-
-        <!-- <it-input v-model.number="zoom" label-top="zoom" /> -->
-    </div>
+    </div> -->
 
     <svg
         ref="elem"
@@ -142,9 +153,20 @@ export default defineComponent({
     >
         <!-- <circle cx="0" cy="0" r="1" fill="blue" /> -->
 
-        <!-- <slot /> -->
+        <slot />
 
-        <g stroke="green" stroke-width="0.1" fill="transparent">
+        <transition name="fade">
+            <rect
+                :key="mouseCellKey"
+                class="mouse-cell-rect pointer-events-none"
+                fill="#ffffff20"
+                :x="mouseCell.x"
+                :y="-mouseCell.y"
+                width="1"
+                height="1"
+            />
+        </transition>
+        <!-- <g stroke="green" stroke-width="0.1" fill="transparent">
             <polyline points="0,5 0,0 5,0" class="pointer-events-none" />
         </g>
 
@@ -155,9 +177,17 @@ export default defineComponent({
             stroke="pink"
             fill="white"
             class="pointer-events-none"
-        />
+        /> -->
     </svg>
 </template>
+
+<style lang="sass">
+.fade-transition
+    &-leave-active
+        transition: opacity 0.2s ease
+    &-leave-to
+        opacity: 0
+</style>
 
 <style lang="sass" scoped>
 svg.root
@@ -170,4 +200,7 @@ svg.root
 
     &--grabbing
         cursor: grabbing
+
+    // .mouse-cell-rect
+    //     transition: all .15s ease
 </style>
