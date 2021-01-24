@@ -13,6 +13,14 @@ export default defineComponent({
     setup(props) {
         const { enabled, toggle } = props.chip;
 
+        // useCustomKeys({
+        //     KeyE: {
+        //         label: 'E',
+        //         description: 'on/off',
+        //         down: () => toggle(),
+        //     },
+        // });
+
         return {
             enabled,
             toggle,

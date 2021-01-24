@@ -1,4 +1,16 @@
-import { computed, ComputedRef, reactive, ref, Ref, shallowReactive, UnwrapRef, watch, watchEffect } from 'vue';
+import {
+    computed,
+    ComputedRef,
+    reactive,
+    readonly,
+    ref,
+    Ref,
+    shallowReactive,
+    shallowReadonly,
+    UnwrapRef,
+    watch,
+    watchEffect,
+} from 'vue';
 import deepEqual from 'fast-deep-equal';
 import {
     Silicon,

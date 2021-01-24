@@ -4,9 +4,19 @@ import { AppChips, useAppStore } from '@/state';
 import ChipPowerSupply from './ChipPowerSupply.vue';
 import ChipSensor from './ChipSensor.vue';
 import ChipInvertor from './ChipInvertor.vue';
-import { Vector2 } from '@/core/heap';
 import ChipBufferVue from './ChipBuffer.vue';
 import SiliconGridSvg from './SiliconGridSvg.vue';
+import { Vector2 } from '@/core/vec';
+import { Vector2Like } from '@/core/heap';
+
+const ChipComponentsMapped: {
+    [K in AppChips['chip']]: Component;
+} = {
+    SENSOR: ChipSensor,
+    POWER_SUPPLY: ChipPowerSupply,
+    INVERTOR: ChipInvertor,
+    BUFFER: ChipBufferVue,
+};
 
 export default defineComponent({
     name: 'SiliconGrid',
@@ -17,23 +27,18 @@ export default defineComponent({
         } = useAppStore();
 
         function resolveChipComponent(elem: AppChips): Component {
-            switch (elem.chip) {
-                case 'SENSOR':
-                    return ChipSensor;
-                case 'POWER_SUPPLY':
-                    return ChipPowerSupply;
-                case 'INVERTOR':
-                    return ChipInvertor;
-                case 'BUFFER':
-                    return ChipBufferVue;
-                default:
-                    throw new Error(`Unknown chip`);
-            }
+            return ChipComponentsMapped[elem.chip];
         }
+
+        /**
+         * Позиция активна, если в клетке этой позиции находится мышь
+         */
+        function isPositionActive(pos: Vector2Like): boolean {}
 
         return {
             elems,
             resolveChipComponent,
+            isPositionActive,
         };
     },
 });

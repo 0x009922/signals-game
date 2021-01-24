@@ -1,9 +1,10 @@
 <script lang="ts">
 // import { useElementBounding, useElementSize } from '@vueuse/core';
-import { computed, defineComponent, reactive, ref, watchEffect } from 'vue';
+import { computed, defineComponent, reactive, ref, watch, watchEffect } from 'vue';
 import { useElementSizeByWindow } from '@/tools/element-size';
 import { useSvgNavigation, setupScaleMouseOrigin } from '@/tools/svg-coords';
 import { Vector2 } from '@/core/vec';
+import { useAppStore } from '@/state';
 
 // function relativeToAbs()
 
@@ -55,6 +56,11 @@ export default defineComponent({
             // };
         });
         const mouseCellKey = computed(() => mouseCell.value.toKey());
+
+        const {
+            mouse: { setGridCell },
+        } = useAppStore();
+        watch(mouseCell, setGridCell, { deep: true, immediate: true });
 
         // events
 

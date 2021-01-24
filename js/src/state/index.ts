@@ -5,12 +5,16 @@ import { SensorChip } from '@/chips/sensor';
 import { createInjectHelpers } from '@/tools/provide-inject';
 import { useSilicon } from '@/core/silicon';
 import { BufferChip } from '@/chips/buffer';
+import { createKeyboardStore, KeyboardStore } from './keyboard';
+import { createMouseStore, MouseStore } from './mouse';
 // import { useLightningEnvironment } from '@/core/lightning-env';
 
 export type AppChips = PowerSupplyChip | InvertorChip | SensorChip | BufferChip;
 
 export interface AppStore {
     silicon: Silicon<AppChips>;
+    keyboard: KeyboardStore;
+    mouse: MouseStore;
 }
 
 export function createAppStore(): AppStore {
@@ -22,6 +26,8 @@ export function createAppStore(): AppStore {
 
     return {
         silicon,
+        keyboard: createKeyboardStore(),
+        mouse: createMouseStore(),
     };
 }
 

@@ -3,7 +3,9 @@ import { defineComponent } from 'vue';
 import AppStoreProvider from '@/components/AppStoreProvider.vue';
 import DebugMounter from '@/components/DebugMounter.vue';
 import SiliconGrid from '@/components/SiliconGrid.vue';
-import KeyboardHandlerVue from './components/KeyboardHandler.vue';
+// import KeyboardHandlerVue from '@/modules/keyboard/KeyboardHandler.vue';
+import KeysPanel from './modules/keyboard/KeysPanel.vue';
+import PrimaryKeysHandler from './components/PrimaryKeysHandler.vue';
 // import SvgSandbox from '@/components/SvgSandbox.vue';
 
 export default defineComponent({
@@ -11,7 +13,9 @@ export default defineComponent({
         AppStoreProvider,
         DebugMounter,
         SiliconGrid,
-        KeyboardHandlerVue,
+        // KeyboardHandlerVue,
+        KeysPanel,
+        PrimaryKeysHandler,
     },
 });
 </script>
@@ -22,6 +26,9 @@ export default defineComponent({
         <silicon-grid />
         <debug-mounter />
 
-        <keyboard-handler-vue />
+        <keys-panel />
+        <primary-keys-handler />
+        <!-- <keyboard-handler-vue> -->
+        <!-- </keyboard-handler-vue> -->
     </app-store-provider>
 </template>

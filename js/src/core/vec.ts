@@ -63,6 +63,10 @@ export class Vector2 implements Vector2Like {
         this.setFromCoords(vec.x, vec.y);
         return this;
     }
+
+    public equals(vec: Vector2Like): boolean {
+        return this.x === vec.x && this.y === vec.y;
+    }
 }
 
 // export function vec_to_key(vec: Vector2Like): string {

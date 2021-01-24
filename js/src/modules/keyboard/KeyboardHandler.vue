@@ -1,11 +1,14 @@
 <script lang="ts">
-import { defineComponent, onUnmounted, reactive, watchEffect } from 'vue';
+import { defineComponent, provide, reactive, readonly, watchEffect } from 'vue';
 import { hookedWindowAddEventListener } from '@/tools/hooked-window-events';
+import { KEYS_INJECT_SYMBOL } from './shared';
 
 export default defineComponent({
     name: 'KeyboardHandler',
     setup() {
         const downKeys = reactive(new Set<string>());
+
+        provide(KEYS_INJECT_SYMBOL, readonly({ downKeys }));
 
         function keydown(ev: KeyboardEvent) {
             downKeys.add(ev.code);
@@ -23,8 +26,10 @@ export default defineComponent({
 
         hookedWindowAddEventListener('keydown', keydown);
         hookedWindowAddEventListener('keyup', keyup);
-
-        return () => null;
     },
 });
 </script>
+
+<template>
+    <slot />
+</template>
