@@ -6,6 +6,7 @@ import SiliconGrid from '@/components/SiliconGrid.vue';
 // import KeyboardHandlerVue from '@/modules/keyboard/KeyboardHandler.vue';
 import KeysPanel from './modules/keyboard/KeysPanel.vue';
 import PrimaryKeysHandler from './components/PrimaryKeysHandler.vue';
+import SpecificLayoutSelector from './modules/keyboard/chip-specific-layouts/Selector.vue';
 // import SvgSandbox from '@/components/SvgSandbox.vue';
 
 export default defineComponent({
@@ -16,19 +17,18 @@ export default defineComponent({
         // KeyboardHandlerVue,
         KeysPanel,
         PrimaryKeysHandler,
+        SpecificLayoutSelector,
     },
 });
 </script>
 
 <template>
-    <!-- <svg-sandbox /> -->
     <app-store-provider>
         <silicon-grid />
         <debug-mounter />
 
         <keys-panel />
         <primary-keys-handler />
-        <!-- <keyboard-handler-vue> -->
-        <!-- </keyboard-handler-vue> -->
+        <specific-layout-selector />
     </app-store-provider>
 </template>

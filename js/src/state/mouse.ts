@@ -1,6 +1,6 @@
 import { Vector2Like } from '@/core/heap';
 import { Vector2 } from '@/core/vec';
-import { reactive, readonly, watchEffect } from 'vue';
+import { reactive, readonly } from 'vue';
 
 export interface MouseStore {
     currentGridCell: Vector2;
