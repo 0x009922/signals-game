@@ -25,7 +25,7 @@ export default defineComponent({
 <template>
     <app-store-provider>
         <silicon-grid />
-        <debug-mounter />
+        <!-- <debug-mounter /> -->
 
         <keys-panel />
         <primary-keys-handler />

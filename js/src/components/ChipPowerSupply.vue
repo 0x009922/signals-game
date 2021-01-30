@@ -84,6 +84,18 @@ export default defineComponent({
 
         <circle cx="50%" cy="50%" r="10%" fill="lime" />
 
+        <text
+            x="75"
+            y="25"
+            font-size="20"
+            text-anchor="middle"
+            alignment-baseline="middle"
+            class="font-mono"
+            :fill="enabled ? 'lime' : '#040'"
+        >
+            {{ enabled ? 1 : 0 }}
+        </text>
+
         <!-- <text fill="white" x="10" y="20">Power</text>
         <text :fill="enabled ? 'blue' : '#000088'" font-size="2em" x="20" y="50" dy="15">
             {{ enabled ? 'ON' : 'OFF' }}
