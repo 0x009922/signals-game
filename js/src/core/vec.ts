@@ -14,6 +14,10 @@ export class Vector2 implements Vector2Like {
         return new Vector2(x, y);
     }
 
+    public static fromPolarCoords(rad: number, angle: number): Vector2 {
+        return new Vector2(rad * Math.cos(angle), rad * Math.sin(angle));
+    }
+
     public x: number;
 
     public y: number;
@@ -49,6 +53,16 @@ export class Vector2 implements Vector2Like {
         return this.mulScalar(-1);
     }
 
+    public negateY(): Vector2 {
+        this.y *= -1;
+        return this;
+    }
+
+    public negateX(): Vector2 {
+        this.x *= -1;
+        return this;
+    }
+
     public toKey(): string {
         return `${this.x} ${this.y}`;
     }
@@ -66,6 +80,10 @@ export class Vector2 implements Vector2Like {
 
     public equals(vec: Vector2Like): boolean {
         return this.x === vec.x && this.y === vec.y;
+    }
+
+    public copy(): Vector2 {
+        return Vector2.copy(this);
     }
 }
 
