@@ -69,6 +69,8 @@ export default defineComponent({
             }));
         });
 
+        const visiblePorts = computed<PortItem[]>(() => list.value.filter((x) => x.state.type !== PortType.Off));
+
         function computePortTriangle(dir: Direction) {
             const { type } = props.chip.ports[dir];
             return portTrianglePoints({
@@ -93,7 +95,7 @@ export default defineComponent({
         const BORDER = 'black';
 
         return {
-            list,
+            visiblePorts,
             PortType,
             computePortTriangle,
             linePoints,
@@ -112,7 +114,7 @@ export default defineComponent({
             <polyline points="25,50 75,50" />
         </g> -->
 
-        <template v-for="({ state, dir }, i) in list" :key="i">
+        <template v-for="({ state, dir }, i) in visiblePorts" :key="i">
             <polyline
                 stroke-width="4"
                 :class="{ 'z-10': state.active }"

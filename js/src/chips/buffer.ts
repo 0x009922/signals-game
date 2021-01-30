@@ -6,6 +6,7 @@ import { oppositeDirection } from '@/core/dir';
 export enum PortType {
     In = 'IN',
     Out = 'OUT',
+    Off = 'OFF',
 }
 
 export interface PortStateBase {
@@ -58,7 +59,7 @@ function directionsMap<T>(fn: (dir: Direction) => T): Record<Direction, T> {
 }
 
 export const setupBufferChip: ChipSetup<BufferChip> = (ctx) => {
-    const portTypeMap = reactive(directionsMap(() => PortType.In));
+    const portTypeMap = reactive(directionsMap(() => PortType.Off));
 
     function setPortType(dir: Direction, val: PortType) {
         portTypeMap[dir] = val;
@@ -103,6 +104,8 @@ export const setupBufferChip: ChipSetup<BufferChip> = (ctx) => {
                     return portActiveInputMap[dir].value;
                 case PortType.Out:
                     return portActiveOutputMap[dir].value;
+                case PortType.Off:
+                    return false;
                 default:
                     throw new Error(`Undefined port type: ${type.value}`);
             }

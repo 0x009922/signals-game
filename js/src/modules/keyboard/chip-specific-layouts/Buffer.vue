@@ -16,7 +16,7 @@ export default defineComponent({
     },
     setup(props) {
         function togglePort(dir: Direction) {
-            const RING: PortType[] = [PortType.In, PortType.Out];
+            const RING: PortType[] = [PortType.In, PortType.Out, PortType.Off];
             const current = props.chip.ports[dir].type;
             const next = RING[(RING.indexOf(current) + 1) % RING.length];
             props.chip.setPortType(dir, next);
