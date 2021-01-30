@@ -1,6 +1,5 @@
 <script lang="ts">
-// import { useElementBounding, useElementSize } from '@vueuse/core';
-import { computed, defineComponent, reactive, ref, watch, watchEffect } from 'vue';
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
 import { useElementSizeByWindow } from '@/tools/element-size';
 import { useSvgNavigation, setupScaleMouseOrigin } from '@/tools/svg-coords';
 import { Vector2 } from '@/core/vec';
@@ -89,8 +88,9 @@ export default defineComponent({
         }
 
         function mwheel({ wheelDelta: delta }: { wheelDelta: number }) {
-            const val = delta * (0.1 / 120);
-            zoom.value += val;
+            let val = 1.1;
+            if (delta < 0) val = 1 / val;
+            zoom.value *= val;
         }
 
         function releaseGrabbing() {
@@ -199,6 +199,7 @@ export default defineComponent({
 svg.root
     cursor: grab
     user-select: none
+    transition: viewBox .3s ease
 
     // width: 500px
     // height: 500px
