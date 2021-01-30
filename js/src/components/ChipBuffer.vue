@@ -1,24 +1,12 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, watchEffect } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { BufferChip, PortState, PortType } from '@/chips/buffer';
-import { Direction, Vector2Like } from '@/core/heap';
+import { Direction } from '@/core/heap';
 import { DIRECTIONS } from '@/core/dir';
 import { Vector2 } from '@/core/vec';
 import { directionVector } from '@/core/vec_dir';
+import { triangleVecs } from '@/tools/triangle';
 // import { add } from '@/core/vec';
-
-/**
- * Получает угол смещения и радиус, отдаёт вектора равностороннего треугольника.
- *
- * Гарантируется, что одна точка соответствует положению угла.
- */
-function triangleVecs(rad: number, angle: number): Vector2[] {
-    const vecs: Vector2[] = [];
-    for (let i = 0, a = angle; i < 3; i++, a += (Math.PI * 2) / 3) {
-        vecs.push(Vector2.fromPolarCoords(rad, a));
-    }
-    return vecs;
-}
 
 function portTrianglePoints({ dir, type, center }: { dir: Direction; type: PortType; center: Vector2 }): string {
     // const { type } = props.chip.ports[dir];
@@ -126,7 +114,6 @@ export default defineComponent({
                 :points="computePortTriangle(dir)"
                 stroke-width="1.5"
                 stroke-linejoin="bevel"
-                :stroke="BORDER"
                 :fill="stateColor(state.active)"
             />
 
@@ -143,7 +130,7 @@ export default defineComponent({
             </template> -->
         </template>
 
-        <circle cx="50" cy="50" r="5" :stroke="BORDER" stroke-width="1.5" :fill="stateColor(somePortActive)" />
+        <circle cx="50" cy="50" r="5" :fill="stateColor(somePortActive)" />
     </svg>
 </template>
 

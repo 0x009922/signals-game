@@ -85,6 +85,10 @@ export class Vector2 implements Vector2Like {
     public copy(): Vector2 {
         return Vector2.copy(this);
     }
+
+    public toSvgCoords(): string {
+        return `${this.x},${this.y}`;
+    }
 }
 
 // export function vec_to_key(vec: Vector2Like): string {
